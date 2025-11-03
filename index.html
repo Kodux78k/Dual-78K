@@ -3,56 +3,46 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <title>Hub78K — Infodose Brain</title>
+  <title>78KHub — Infodose Brain</title>
   <link rel="manifest" href="./manifest.webmanifest"/>
   <meta name="theme-color" content="#0a0e18"/>
   <style>
-    /* MOBILE-FIRST VERTICAL HARD-LOCK */
     :root{
       --bg:#0a0e18; --ink:#e8ecf6; --panel:#0e1220; --muted:#a2acc5;
       --ring:rgba(255,255,255,.12); --accent:#00ff8c; --accent2:#46e7ff;
-      --gradA:#9f00ff; --gradB:#00ffff; /* Nebula Pro 42° */
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     body{display:block;min-height:100dvh}
-    main{display:block;max-width:min(100%, 680px);margin:0 auto;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));}
+    main{display:block;max-width:min(100%,680px);margin:0 auto;padding:12px 14px 20dvh}
     .header{position:sticky;top:0;background:linear-gradient(42deg, rgba(159,0,255,.12), rgba(0,255,255,.08));backdrop-filter:blur(8px);border-bottom:1px solid var(--ring);z-index:5}
-    .header .in{max-width:min(100%,680px);margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+    .header .in{max-width:min(100%,680px);margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
     .logo{width:28px;height:28px;border-radius:50%;background:
       radial-gradient(circle at 50% 50%, rgba(0,255,140,.8), transparent 48%),
       conic-gradient(from 42deg, rgba(159,0,255,.9), rgba(0,255,255,.9));
       border:1px solid var(--ring);box-shadow:0 0 0 2px rgba(0,0,0,.2) inset}
     h1{margin:0;font-size:16px;letter-spacing:.3px}
-    .tag{font-size:12px;opacity:.8}
-    .card{background:var(--panel);border:1px solid var(--ring);border-radius:14px;padding:14px;margin:12px 0; box-shadow:0 6px 24px rgba(0,0,0,.35)}
-    label{display:block;font-weight:600;margin-bottom:6px}
-    input, textarea{width:100%;display:block;border:1px solid var(--ring);border-radius:12px;background:var(--bg);color:var(--ink);padding:10px 12px}
-    textarea{min-height:120px;resize:vertical}
-    .row{display:block} /* mobile lock: vertical only */
-    .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid var(--ring);background:linear-gradient(42deg, rgba(0,255,140,.08), rgba(0,255,255,.08));color:var(--ink);text-decoration:none;font-weight:600}
-    .btn:hover{filter:brightness(1.1)}
-    .btn.primary{background:linear-gradient(42deg, rgba(0,255,140,.22), rgba(0,255,255,.18));box-shadow:0 6px 20px rgba(0,255,140,.12)}
-    .inline-btns{display:flex;gap:8px;flex-wrap:wrap}
-    .muted{color:var(--muted)}
-    .ok{color:#00f59d}
-    .warn{color:#ffd166}
-    .bad{color:#ff6b6b}
-    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-    .hr{height:1px;background:var(--ring);margin:12px 0}
-    details summary{cursor:pointer;font-weight:700}
+    .small{font-size:12px}.muted{color:var(--muted)}
     .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--ring);border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.03);font-size:12px}
-    .footer{opacity:.8;font-size:12px;text-align:center;padding:14px}
-    .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--ring)}
-    .accent{color:var(--accent)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid var(--ring);background:linear-gradient(42deg, rgba(0,255,140,.08), rgba(0,255,255,.08));color:var(--ink);text-decoration:none;font-weight:600}
+    .btn.primary{background:linear-gradient(42deg, rgba(0,255,140,.22), rgba(0,255,255,.18));box-shadow:0 6px 20px rgba(0,255,140,.12)}
+    input, textarea, select{width:100%;display:block;border:1px solid var(--ring);border-radius:12px;background:var(--bg);color:var(--ink);padding:10px 12px}
+    .card{border:1px solid var(--ring);border-radius:14px;background:var(--panel)}
+    .section{margin:12px 0;overflow:hidden;transition:max-height .35s ease, opacity .25s ease, transform .25s ease}
+    .section.collapsed{max-height:56px}
+    .section.expanded{max-height:1000px}
+    .section .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer}
+    .section .title{font-weight:700}
+    .section .body{padding:0 14px 14px}
+    .chev{transition:transform .25s ease}
+    .section.expanded .chev{transform:rotate(180deg)}
+    .row{margin:10px 0}
     .grid{display:block}
+    .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--ring)}
     .kbar{position:sticky;bottom:0;background:linear-gradient(180deg, transparent, rgba(0,0,0,.45));padding:10px 0;backdrop-filter:blur(8px)}
-    .kbar .in{max-width:min(100%,680px);margin:0 auto;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap}
+    .kbar .in{max-width:min(100%,680px);margin:0 auto;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
     .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));padding:10px 12px;background:#09101c;border:1px solid var(--ring);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none}
     .toast.show{display:block}
-    .ghost{opacity:.35}
-    .small{font-size:12px}
-    .center{text-align:center}
   </style>
 </head>
 <body>
@@ -60,64 +50,120 @@
     <div class="in">
       <div class="logo" aria-hidden="true"></div>
       <div>
-        <h1>Hub78K <span class="tag">• Brain do Brain</span></h1>
-        <div class="small muted">Base Madeira + Nebula Pro • PWA • Local‑first</div>
+        <h1>78KHub <span class="small muted">• Brain do Brain</span></h1>
+        <div class="small muted">Base Madeira + Nebula Pro • PWA • Local-first</div>
       </div>
     </div>
   </header>
 
   <main id="app">
-    <section class="card">
-      <div class="inline-btns" style="justify-content:space-between;align-items:center">
-        <div class="pill"><strong>Estado:</strong> <span id="state-badge" class="badge">desbloqueando…</span></div>
-        <div class="pill">NS <span class="mono" id="ns-ver"></span></div>
+    <!-- Section 1: Bem-vindo / Dashboard (abre primeiro, as demais fechadas) -->
+    <section class="card section expanded" data-id="dashboard">
+      <div class="head">
+        <div class="title">Bem-vindo • Dashboard</div>
+        <div class="pill"><strong>Estado:</strong> <span id="state-badge" class="badge">—</span></div>
+        <div class="chev">⌄</div>
       </div>
-      <div class="hr"></div>
-      <div class="row">
-        <label>Seu nome</label>
-        <input id="user-name" placeholder="Digite seu nome…"/>
+      <div class="body">
+        <div class="row">
+          <label>Seu nome</label>
+          <input id="user-name" placeholder="Digite seu nome…"/>
+        </div>
+        <div class="row">
+          <label>Prova de livro (trecho/hash)</label>
+          <textarea id="book-proof" placeholder="Cole um trecho do Livro Vivo 78K…"></textarea>
+        </div>
+        <div class="row">
+          <div class="pill">NS <span class="badge" id="ns-ver"></span></div>
+        </div>
+        <div class="row" id="quick" class="small"></div>
+        <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn primary" id="btn-init">Inicializar</button>
+          <button class="btn" id="btn-generate-keys">Gerar Chaves</button>
+          <button class="btn" id="btn-export">Exportar</button>
+          <button class="btn" id="btn-import">Importar</button>
+        </div>
       </div>
-      <div class="row" style="margin-top:10px">
-        <label>Prova de livro (cole um trecho ou hash)</label>
-        <textarea id="book-proof" placeholder="Cole um trecho do seu Livro Vivo 78K ou um hash válido…"></textarea>
-      </div>
-      <div class="inline-btns" style="margin-top:10px">
-        <button class="btn primary" id="btn-init">Inicializar Hub</button>
-        <button class="btn" id="btn-generate-keys">Gerar Chaves</button>
-        <button class="btn" id="btn-export">Exportar Estado</button>
-        <button class="btn" id="btn-import">Importar Estado</button>
-      </div>
-      <p class="muted small">Para “ativar” o 78K global, é necessário ter uma <em>prova de livro</em>. O Hub não é o livro — é o conector/estado compartilhado.</p>
     </section>
 
-    <section class="card">
-      <h2 style="margin:0 0 8px 0">Visão Rápida</h2>
-      <div id="quick" class="small"></div>
-      <div class="hr"></div>
-      <details>
-        <summary>SDK para outros apps (protocolo localStorage)</summary>
-        <pre class="mono small ghost" id="sdk"></pre>
-      </details>
+    <!-- Section 2: Personalização básica (Infodose 2.*) -->
+    <section class="card section collapsed" data-id="personal">
+      <div class="head">
+        <div class="title">Personalização • Infodose 2.*</div>
+        <div class="chev">⌄</div>
+      </div>
+      <div class="body">
+        <div class="row">
+          <label>Infodose 2.username</label>
+          <input id="i2-username" placeholder="@username"/>
+        </div>
+        <div class="row">
+          <label>Infodose 2.arc (arquétipo)</label>
+          <select id="i2-arc">
+            <option value="">—</option>
+            <option>Madeira</option><option>Água</option><option>Fogo</option><option>Terra</option><option>Metal</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>Infodose 2.voices (JSON)</label>
+          <textarea id="i2-voices" placeholder='["Kodux Dual","Voz do Pulso"]'></textarea>
+        </div>
+        <div class="row">
+          <label>Infodose 2.bg (custom)</label>
+          <input id="i2-bg" placeholder="ex: linear-gradient(42deg,#f0f,#0ff)"/>
+        </div>
+        <div class="row">
+          <label>Infodose 2.78k (link/key)</label>
+          <input id="i2-78k" placeholder="chave/link do 78K"/>
+        </div>
+        <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="btn-save-i2">Salvar</button>
+          <button class="btn" id="btn-clear-i2">Limpar</button>
+        </div>
+      </div>
     </section>
 
-    <section class="card">
-      <h2 style="margin:0 0 8px 0">Documentos</h2>
-      <p class="muted small">Uma lista simples de documentos anexados ao seu Hub (metadados ficam no Hub; conteúdo pode ficar cifrado via WebCrypto).</p>
-      <div class="inline-btns">
-        <button class="btn" id="btn-add-doc">Adicionar Doc</button>
-        <button class="btn" id="btn-clear-docs">Limpar Docs</button>
+    <!-- Section 3: Documentos -->
+    <section class="card section collapsed" data-id="docs">
+      <div class="head">
+        <div class="title">Documentos</div>
+        <div class="chev">⌄</div>
       </div>
-      <div id="docs" class="small" style="margin-top:8px"></div>
+      <div class="body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="btn-add-doc">Adicionar Doc</button>
+          <button class="btn" id="btn-clear-docs">Limpar Docs</button>
+        </div>
+        <div id="docs" class="small" style="margin-top:8px"></div>
+      </div>
     </section>
 
-    <section class="card">
-      <h2 style="margin:0 0 8px 0">Segurança</h2>
-      <div class="inline-btns">
-        <button class="btn" id="btn-lock">Bloquear 78K</button>
-        <button class="btn" id="btn-unlock">Desbloquear (requer prova)</button>
-        <button class="btn" id="btn-wipe">Apagar Tudo</button>
+    <!-- Section 4: Segurança -->
+    <section class="card section collapsed" data-id="security">
+      <div class="head">
+        <div class="title">Segurança</div>
+        <div class="chev">⌄</div>
       </div>
-      <p class="small muted">Chave simétrica gerada via WebCrypto (AES‑GCM). Estado principal é público no localStorage; conteúdos sensíveis podem ser cifrados.</p>
+      <div class="body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="btn-lock">Bloquear</button>
+          <button class="btn" id="btn-unlock">Desbloquear</button>
+          <button class="btn" id="btn-wipe">Apagar Tudo</button>
+        </div>
+        <p class="small muted">Vault cifrado pode ser habilitado em versões futuras (AES-GCM via WebCrypto).</p>
+      </div>
+    </section>
+
+    <!-- Section 5: SDK -->
+    <section class="card section collapsed" data-id="sdk">
+      <div class="head">
+        <div class="title">SDK / Protocolo</div>
+        <div class="chev">⌄</div>
+      </div>
+      <div class="body">
+        <pre class="small" id="sdk"></pre>
+        <button class="btn" id="btn-copy-sdk">Copiar SDK</button>
+      </div>
     </section>
 
     <div class="toast" id="toast"></div>
@@ -126,190 +172,154 @@
   <div class="kbar">
     <div class="in">
       <button class="btn primary" id="btn-install">Instalar PWA</button>
-      <a class="btn" href="#" id="btn-open-sdk">Copiar SDK</a>
-      <span class="muted small">Sempre único, sempre seu.</span>
+      <span class="small muted">Sempre único, sempre seu.</span>
     </div>
   </div>
 
   <script>
-  // ===============================
-  // Hub78K — Núcleo (Storage + SDK)
-  // ===============================
   (function(){
     'use strict';
+    // Namespace + keys
+    const NS = 'hub78k::v2::';
+    const CORE_KEY = NS+'core';
+    const DOCS_KEY = NS+'docs';
+    const SIGNAL_KEY = NS+'signal';
 
-    const NS = 'hub78k::v1::';       // bump to v2 on breaking changes
-    const CORE_KEY = NS+'core';      // perfil, grants, flags
-    const DOCS_KEY = NS+'docs';      // metadados de documentos
-    const SIGNAL_KEY = NS+'signal';  // ponte de broadcast via storage event
-    const VAULT_KEY = NS+'vault';    // blobs cifrados opcionalmente
+    // Infodose 2.* keys (dentro do core.i2)
+    const I2_KEYS = ['voices','username','arc','bg','78k'];
 
-    const $ = (q,r=document)=>r.querySelector(q);
+    const $=(q,r=document)=>r.querySelector(q);
     const now = ()=> new Date().toISOString();
+    const toast=(m)=>{ const t=$("#toast"); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); };
 
-    const App = {
-      core: null,
-      docs: [],
-      vault: null,
-      cryptoKey: null,
-      beforeInstallPrompt: null,
-      get ns(){ return NS; },
+    // Accordion (apenas uma aberta)
+    const sections=[...document.querySelectorAll('.section')];
+    sections.forEach(sec=>{
+      const head=sec.querySelector('.head');
+      head.addEventListener('click', ()=>{
+        sections.forEach(s=> s.classList.add('collapsed'));
+        sec.classList.remove('collapsed');
+        sec.classList.add('expanded');
+        sections.filter(s=>s!==sec).forEach(s=>s.classList.remove('expanded'));
+      });
+    });
+
+    const App={
+      core:null, docs:[],
       save(k,v){ localStorage.setItem(k, JSON.stringify(v)); },
-      load(k, fallback){
-        const raw = localStorage.getItem(k);
-        if(!raw) return fallback;
-        try { return JSON.parse(raw); } catch(e){ return fallback; }
-      },
-      toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); },
+      load(k,fallback){ const raw=localStorage.getItem(k); if(!raw) return fallback; try{return JSON.parse(raw);}catch(_){return fallback;} },
       badge(state){
         const el=$("#state-badge");
         el.textContent = state;
-        el.style.borderColor = 'var(--ring)';
         el.style.color = state==='ativo' ? 'var(--accent)' : state==='bloqueado' ? '#ffd166' : 'var(--muted)';
       },
       refresh(){
         $("#ns-ver").textContent = NS.replace(/:+$/,'').split('::').slice(0,3).join('::');
         this.core = this.load(CORE_KEY, null);
         this.docs = this.load(DOCS_KEY, []);
-        this.vault = this.load(VAULT_KEY, {});
-        const q=$("#quick");
         if(!this.core){
-          this.badge('desbloqueando…');
-          q.innerHTML = '<span class="muted">Nenhum perfil inicializado.</span>';
+          this.badge('—');
+          $("#quick").innerHTML = '<span class="muted small">Nenhum perfil inicializado.</span>';
         } else {
-          const s = this.core;
+          const s=this.core;
           this.badge(s.active ? 'ativo' : 'bloqueado');
-          $("#user-name").value = s.user?.name || '';
-          $("#book-proof").value = s.book?.proof || '';
-          q.innerHTML = `
-            <div><strong>user_id:</strong> <span class="mono">${s.user?.id||'—'}</span></div>
-            <div><strong>grants:</strong> <span class="mono">${(s.grants||[]).join(', ')||'—'}</span></div>
-            <div><strong>has_book:</strong> <span class="mono">${s.book?.has||false}</span></div>
-            <div><strong>active:</strong> <span class="mono">${s.active||false}</span></div>
-            <div><strong>created_at:</strong> <span class="mono">${s.created_at||'—'}</span></div>
+          $("#user-name").value = s.user?.name||'';
+          $("#book-proof").value = s.book?.proof||'';
+          $("#quick").innerHTML = `
+            <div class="small"><strong>user_id:</strong> <span class="badge">${s.user?.id||'—'}</span></div>
+            <div class="small"><strong>grants:</strong> <span class="badge">${(s.grants||[]).join(', ')||'—'}</span></div>
+            <div class="small"><strong>has_book:</strong> <span class="badge">${s.book?.has||false}</span></div>
+            <div class="small"><strong>active:</strong> <span class="badge">${s.active||false}</span></div>
+            <div class="small"><strong>created_at:</strong> <span class="badge">${s.created_at||'—'}</span></div>
           `;
+          // preencher I2
+          const i2 = s.i2||{};
+          $("#i2-username").value = i2.username||'';
+          $("#i2-arc").value = i2.arc||'';
+          $("#i2-voices").value = i2.voices ? JSON.stringify(i2.voices) : '';
+          $("#i2-bg").value = i2.bg||'';
+          $("#i2-78k").value = i2['78k']||'';
         }
-        // docs render
+        // docs
         const D=$("#docs");
-        if(!this.docs.length){ D.innerHTML = '<span class="muted">Sem documentos.</span>'; }
+        if(!this.docs.length){ D.innerHTML='<span class="muted small">Sem documentos.</span>'; }
         else {
-          D.innerHTML = this.docs.map((d,i)=>`<div class="pill"><span>#${i+1}</span><strong>${d.title}</strong><span class="mono">${d.id}</span></div>`).join(' ');
+          D.innerHTML = this.docs.map((d,i)=>`<div class="pill"><span>#${i+1}</span><strong>${d.title}</strong><span class="badge">${d.id}</span></div>`).join(' ');
         }
       },
       initCore(){
-        const name = $("#user-name").value.trim();
-        const proof = $("#book-proof").value.trim();
+        const name=$("#user-name").value.trim();
+        const proof=$("#book-proof").value.trim();
         const user_id = crypto.getRandomValues(new Uint32Array(4)).join('-');
-        const has_book = proof.length >= 12; // regra simples para demo (pode trocar para verificação de hash)
-        const core = {
-          version: 1,
-          created_at: now(),
-          active: has_book, // só ativa se há prova
-          user: { id: user_id, name },
-          book: { has: has_book, proof },
-          grants: [],
-          keys: { pub: null, sym: null }
+        const has_book = proof.length>=12;
+        const core={
+          version:2, created_at:now(), active:has_book,
+          user:{ id:user_id, name },
+          book:{ has:has_book, proof },
+          grants:[],
+          i2:{ username:'', arc:'', voices:null, bg:'', '78k':'' },
+          keys:{ pub:null, sym:null }
         };
         this.save(CORE_KEY, core);
-        this.refresh();
-        this.broadcast({ type:'hub:init', user_id });
-        this.toast('Hub inicializado');
+        this.refresh(); toast('Hub inicializado');
       },
       async generateKeys(){
-        // gera chave simétrica AES-GCM e uma "pública fake" para identificação simples
         const rawKey = crypto.getRandomValues(new Uint8Array(32));
-        this.cryptoKey = await crypto.subtle.importKey('raw', rawKey, 'AES-GCM', true, ['encrypt','decrypt']);
         const pubId = btoa(String.fromCharCode(...rawKey.slice(0,8))).replace(/[^A-Za-z0-9]/g,'');
         const sym = btoa(String.fromCharCode(...rawKey));
-        const core = this.load(CORE_KEY, {});
-        core.keys = { pub: 'PUB-'+pubId, sym: sym };
-        this.save(CORE_KEY, core);
-        this.refresh();
-        this.broadcast({ type:'hub:keys', pub: core.keys.pub });
-        this.toast('Chaves geradas');
-      },
-      lock(){
-        const c=this.load(CORE_KEY, null); if(!c) return;
-        c.active=false; this.save(CORE_KEY, c); this.refresh();
-        this.broadcast({ type:'hub:lock' });
-        this.toast('Hub bloqueado');
-      },
-      unlock(){
-        const c=this.load(CORE_KEY, null); if(!c) return;
-        if(c.book?.has){ c.active=true; this.save(CORE_KEY, c); this.refresh(); this.broadcast({ type:'hub:unlock' }); this.toast('Hub desbloqueado'); }
-        else { this.toast('Falta prova do livro'); }
-      },
-      wipe(){
-        [CORE_KEY,DOCS_KEY,SIGNAL_KEY,VAULT_KEY].forEach(k=>localStorage.removeItem(k));
-        this.refresh();
-        this.broadcast({ type:'hub:wipe' });
-        this.toast('Estado apagado');
-      },
-      addDoc(){
-        const id = crypto.getRandomValues(new Uint32Array(2)).join('-');
-        const title = prompt('Título do doc:');
-        if(!title) return;
-        const d = { id, title, created_at: now() };
-        const docs = this.load(DOCS_KEY, []);
-        docs.push(d);
-        this.save(DOCS_KEY, docs);
-        this.refresh();
-        this.broadcast({ type:'hub:doc:add', id, title });
-      },
-      clearDocs(){
-        this.save(DOCS_KEY, []);
-        this.refresh();
-        this.broadcast({ type:'hub:doc:clear' });
+        const c=this.load(CORE_KEY,{});
+        c.keys={ pub:'PUB-'+pubId, sym };
+        this.save(CORE_KEY,c); this.refresh(); toast('Chaves geradas');
       },
       exportState(){
-        const data = {
-          core: this.load(CORE_KEY, null),
-          docs: this.load(DOCS_KEY, []),
-          vault: this.load(VAULT_KEY, {}),
-          ns: NS, exported_at: now()
-        };
-        const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'hub78k_state.json';
-        a.click();
+        const data={ core:this.load(CORE_KEY,null), docs:this.load(DOCS_KEY,[]), ns:NS, exported_at:now() };
+        const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='78khub_state.json'; a.click();
       },
       importState(){
-        const inp = document.createElement('input');
-        inp.type = 'file'; inp.accept = 'application/json';
-        inp.onchange = () => {
-          const file = inp.files[0]; if(!file) return;
-          const rd = new FileReader();
-          rd.onload = () => {
-            try {
-              const data = JSON.parse(rd.result);
-              if(data.ns && data.core) localStorage.setItem(CORE_KEY, JSON.stringify(data.core));
+        const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json';
+        inp.onchange=()=>{ const f=inp.files[0]; if(!f) return;
+          const rd=new FileReader(); rd.onload=()=>{
+            try{ const data=JSON.parse(rd.result);
+              if(data.core) localStorage.setItem(CORE_KEY, JSON.stringify(data.core));
               if(data.docs) localStorage.setItem(DOCS_KEY, JSON.stringify(data.docs));
-              if(data.vault) localStorage.setItem(VAULT_KEY, JSON.stringify(data.vault));
-              App.refresh(); App.broadcast({ type:'hub:import' }); App.toast('Estado importado');
-            } catch(e){ App.toast('Falha ao importar'); }
-          };
-          rd.readAsText(file);
+              App.refresh(); toast('Estado importado');
+            }catch(e){ toast('Falha ao importar'); }
+          }; rd.readAsText(f);
         };
         inp.click();
       },
-      broadcast(payload){
-        // usa storage event para notificar outros apps
-        localStorage.setItem(SIGNAL_KEY, JSON.stringify({ t: Date.now(), payload }));
-        // micro-clean para evitar crescimento
-        setTimeout(()=>localStorage.removeItem(SIGNAL_KEY), 50);
+      addDoc(){
+        const id=crypto.getRandomValues(new Uint32Array(2)).join('-');
+        const title=prompt('Título do doc:'); if(!title) return;
+        const docs=this.load(DOCS_KEY,[]); docs.push({id,title,created_at:now()});
+        this.save(DOCS_KEY,docs); this.refresh();
       },
-      installPWA(){
-        if(this.beforeInstallPrompt){
-          this.beforeInstallPrompt.prompt();
-          this.beforeInstallPrompt.userChoice.finally(()=>this.beforeInstallPrompt=null);
-        } else {
-          this.toast('Se não aparecer, adicione à Home pelo navegador');
-        }
+      clearDocs(){ this.save(DOCS_KEY,[]); this.refresh(); },
+      lock(){ const c=this.load(CORE_KEY,null); if(!c) return; c.active=false; this.save(CORE_KEY,c); this.refresh(); },
+      unlock(){ const c=this.load(CORE_KEY,null); if(!c) return; if(c.book?.has){ c.active=true; this.save(CORE_KEY,c); this.refresh(); } else { toast('Falta prova do livro'); } },
+      wipe(){ [CORE_KEY,DOCS_KEY,SIGNAL_KEY].forEach(k=>localStorage.removeItem(k)); this.refresh(); },
+      saveI2(){
+        const c=this.load(CORE_KEY,null); if(!c) return toast('Inicialize o Hub');
+        const voicesRaw=$("#i2-voices").value.trim();
+        let voices=null; if(voicesRaw){ try{ voices=JSON.parse(voicesRaw); }catch(_){ voices=[voicesRaw]; } }
+        c.i2={
+          username:$("#i2-username").value.trim(),
+          arc:$("#i2-arc").value,
+          voices:voices,
+          bg:$("#i2-bg").value.trim(),
+          '78k':$("#i2-78k").value.trim()
+        };
+        this.save(CORE_KEY,c); this.refresh(); toast('Infodose 2.* salvo');
+      },
+      clearI2(){
+        const c=this.load(CORE_KEY,null); if(!c) return;
+        c.i2={ username:'', arc:'', voices:null, bg:'', '78k':'' };
+        this.save(CORE_KEY,c); this.refresh(); toast('Infodose 2.* limpo');
       }
     };
 
-    // Eventos UI
+    // UI binds
     $("#btn-init").onclick = ()=>App.initCore();
     $("#btn-generate-keys").onclick = ()=>App.generateKeys();
     $("#btn-export").onclick = ()=>App.exportState();
@@ -319,58 +329,30 @@
     $("#btn-lock").onclick = ()=>App.lock();
     $("#btn-unlock").onclick = ()=>App.unlock();
     $("#btn-wipe").onclick = ()=>App.wipe();
-    $("#btn-install").onclick = ()=>App.installPWA();
-    $("#btn-open-sdk").onclick = (e)=>{
-      e.preventDefault();
-      const p = $("#sdk").textContent;
-      navigator.clipboard.writeText(p).then(()=>App.toast('SDK copiado'));
-    };
+    $("#btn-save-i2").onclick = ()=>App.saveI2();
+    $("#btn-clear-i2").onclick = ()=>App.clearI2();
 
     // PWA
-    if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('./sw.js');
-    }
-    window.addEventListener('beforeinstallprompt', (e)=>{
-      e.preventDefault(); App.beforeInstallPrompt = e;
-    });
+    if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
-    // Storage event (escuta sinais de outros apps)
-    window.addEventListener('storage', (e)=>{
-      if(e.key === SIGNAL_KEY && e.newValue){
-        try {
-          const { payload } = JSON.parse(e.newValue);
-          // Futuro: despachar para listeners de terceiros
-          // console.log('[Hub78K] sinal recebido:', payload);
-        } catch(_){}
-      }
-    });
-
-    // Render inicial
-    App.refresh();
-
-    // Exibir SDK
+    // SDK text
     const SDK = `
-// =====================
-// Hub78K SDK (lite)
-// =====================
-const HUB_NS = '${NS}';
+// 78KHub SDK (v2 - Infodose 2.*)
+const HUB_NS = 'hub78k::v2::';
 const CORE = HUB_NS + 'core';
 const SIGNAL = HUB_NS + 'signal';
-
 export const Hub78K = {
   core(){ try{ return JSON.parse(localStorage.getItem(CORE)||'null'); }catch(_){ return null; } },
   active(){ const c=this.core(); return !!(c && c.active); },
   user(){ return this.core()?.user||null; },
+  i2(){ return this.core()?.i2||null; }, // { voices, username, arc, bg, 78k }
   grants(){ return this.core()?.grants||[]; },
   askGrant(appId){
     const c=this.core(); if(!c) return false;
     if(!c.grants.includes(appId)){
-      c.grants.push(appId);
-      localStorage.setItem(CORE, JSON.stringify(c));
-      this.signal({ type:'grant:add', appId });
-      return true;
-    }
-    return false;
+      c.grants.push(appId); localStorage.setItem(CORE, JSON.stringify(c));
+      this.signal({ type:'grant:add', appId }); return true;
+    } return false;
   },
   signal(payload){
     localStorage.setItem(SIGNAL, JSON.stringify({ t: Date.now(), payload }));
@@ -378,16 +360,15 @@ export const Hub78K = {
   },
   onSignal(fn){
     window.addEventListener('storage', (e)=>{
-      if(e.key===SIGNAL && e.newValue){
-        try{ fn(JSON.parse(e.newValue).payload); }catch(_){}
-      }
+      if(e.key===SIGNAL && e.newValue){ try{ fn(JSON.parse(e.newValue).payload); }catch(_){ } }
     });
   }
-};
-// Uso no app terceiro:
-// if(Hub78K.active()){ const u=Hub78K.user(); /* ok */ } else { /* pedir desbloqueio */ }
-    `.trim();
+};`.trim();
     $("#sdk").textContent = SDK;
+    $("#btn-copy-sdk").onclick = ()=>{ navigator.clipboard.writeText(SDK).then(()=>toast('SDK copiado')); };
+
+    // initial render
+    App.refresh();
   })();
   </script>
 </body>

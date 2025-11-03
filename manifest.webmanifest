@@ -1,6 +1,6 @@
 {
-  "name": "Hub78K — Infodose Brain",
-  "short_name": "Hub78K",
+  "name": "78KHub — Infodose Brain",
+  "short_name": "78KHub",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0e18",
