@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <title>78KHub — Infodose Brain</title>
+  <title>78KHub — Infodose Brain (v3.1)</title>
   <link rel="manifest" href="./manifest.webmanifest"/>
   <meta name="theme-color" content="#0a0e18"/>
   <style>
@@ -14,7 +14,7 @@
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     body{display:block;min-height:100dvh}
-    main{display:block;max-width:min(100%,680px);margin:0 auto;padding:12px 14px 20dvh}
+    main{display:block;max-width:min(100%,680px);margin:0 auto;padding:12px 14px 22dvh}
     .header{position:sticky;top:0;background:linear-gradient(42deg, rgba(159,0,255,.12), rgba(0,255,255,.08));backdrop-filter:blur(8px);border-bottom:1px solid var(--ring);z-index:5}
     .header .in{max-width:min(100%,680px);margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
     .logo{width:28px;height:28px;border-radius:50%;background:
@@ -30,20 +30,31 @@
     .card{border:1px solid var(--ring);border-radius:14px;background:var(--panel)}
     .section{margin:12px 0;overflow:hidden;transition:max-height .35s ease, opacity .25s ease, transform .25s ease}
     .section.collapsed{max-height:56px}
-    .section.expanded{max-height:1000px}
+    .section.expanded{max-height:1200px}
     .section .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer}
     .section .title{font-weight:700}
     .section .body{padding:0 14px 14px}
     .chev{transition:transform .25s ease}
     .section.expanded .chev{transform:rotate(180deg)}
     .row{margin:10px 0}
-    .grid{display:block}
     .badge{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--ring)}
     .kbar{position:sticky;bottom:0;background:linear-gradient(180deg, transparent, rgba(0,0,0,.45));padding:10px 0;backdrop-filter:blur(8px)}
     .kbar .in{max-width:min(100%,680px);margin:0 auto;padding:0 14px;display:flex;gap:8px;flex-wrap:wrap}
     .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));padding:10px 12px;background:#09101c;border:1px solid var(--ring);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none}
     .toast.show{display:block}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+
+    /* Modal bonito */
+    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);z-index:10000}
+    .modal.open{display:grid}
+    .modal .box{width:min(92vw,680px);max-height:80vh;display:flex;flex-direction:column;border:1px solid var(--ring);border-radius:16px;background:linear-gradient(42deg, rgba(0,255,140,.06), rgba(0,255,255,.06));backdrop-filter:blur(8px);box-shadow:0 12px 40px rgba(0,0,0,.45)}
+    .modal .box .head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--ring)}
+    .modal .box .body{padding:12px 14px;overflow:auto}
+    .modal .box .actions{display:flex;gap:8px;justify-content:flex-end;padding:12px 14px;border-top:1px solid var(--ring)}
+    .modal .btn{padding:8px 12px;border-radius:10px}
+    .modal pre{white-space:pre-wrap;word-wrap:break-word}
   </style>
+  <script type="module" src="./78khub-anim.js"></script>
 </head>
 <body>
   <header class="header">
@@ -57,7 +68,6 @@
   </header>
 
   <main id="app">
-    <!-- Section 1: Bem-vindo / Dashboard (abre primeiro, as demais fechadas) -->
     <section class="card section expanded" data-id="dashboard">
       <div class="head">
         <div class="title">Bem-vindo • Dashboard</div>
@@ -76,7 +86,7 @@
         <div class="row">
           <div class="pill">NS <span class="badge" id="ns-ver"></span></div>
         </div>
-        <div class="row" id="quick" class="small"></div>
+        <div class="row" id="quick"></div>
         <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn primary" id="btn-init">Inicializar</button>
           <button class="btn" id="btn-generate-keys">Gerar Chaves</button>
@@ -86,12 +96,8 @@
       </div>
     </section>
 
-    <!-- Section 2: Personalização básica (Infodose 2.*) -->
     <section class="card section collapsed" data-id="personal">
-      <div class="head">
-        <div class="title">Personalização • Infodose 2.*</div>
-        <div class="chev">⌄</div>
-      </div>
+      <div class="head"><div class="title">Personalização • Infodose 2.*</div><div class="chev">⌄</div></div>
       <div class="body">
         <div class="row">
           <label>Infodose 2.username</label>
@@ -123,43 +129,31 @@
       </div>
     </section>
 
-    <!-- Section 3: Documentos -->
     <section class="card section collapsed" data-id="docs">
-      <div class="head">
-        <div class="title">Documentos</div>
-        <div class="chev">⌄</div>
-      </div>
+      <div class="head"><div class="title">Documentos • Vault cifrado</div><div class="chev">⌄</div></div>
       <div class="body">
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" id="btn-add-doc">Adicionar Doc</button>
           <button class="btn" id="btn-clear-docs">Limpar Docs</button>
         </div>
         <div id="docs" class="small" style="margin-top:8px"></div>
+        <p class="small muted">Conteúdo sensível é salvo como {iv,data} (AES-GCM). Precisa da chave simétrica gerada no Dashboard.</p>
       </div>
     </section>
 
-    <!-- Section 4: Segurança -->
     <section class="card section collapsed" data-id="security">
-      <div class="head">
-        <div class="title">Segurança</div>
-        <div class="chev">⌄</div>
-      </div>
+      <div class="head"><div class="title">Segurança</div><div class="chev">⌄</div></div>
       <div class="body">
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" id="btn-lock">Bloquear</button>
           <button class="btn" id="btn-unlock">Desbloquear</button>
           <button class="btn" id="btn-wipe">Apagar Tudo</button>
         </div>
-        <p class="small muted">Vault cifrado pode ser habilitado em versões futuras (AES-GCM via WebCrypto).</p>
       </div>
     </section>
 
-    <!-- Section 5: SDK -->
     <section class="card section collapsed" data-id="sdk">
-      <div class="head">
-        <div class="title">SDK / Protocolo</div>
-        <div class="chev">⌄</div>
-      </div>
+      <div class="head"><div class="title">SDK / Protocolo</div><div class="chev">⌄</div></div>
       <div class="body">
         <pre class="small" id="sdk"></pre>
         <button class="btn" id="btn-copy-sdk">Copiar SDK</button>
@@ -169,6 +163,23 @@
     <div class="toast" id="toast"></div>
   </main>
 
+  <!-- Modal Bonito -->
+  <div class="modal" id="modal">
+    <div class="box">
+      <div class="head">
+        <div class="title" id="modal-title">Documento</div>
+        <div class="pill">Protegido • Vault</div>
+      </div>
+      <div class="body">
+        <pre id="modal-content" class="mono small"></pre>
+      </div>
+      <div class="actions">
+        <button class="btn" id="modal-copy">Copiar</button>
+        <button class="btn primary" id="modal-close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="kbar">
     <div class="in">
       <button class="btn primary" id="btn-install">Instalar PWA</button>
@@ -176,200 +187,212 @@
     </div>
   </div>
 
-  <script>
-  (function(){
-    'use strict';
-    // Namespace + keys
-    const NS = 'hub78k::v2::';
-    const CORE_KEY = NS+'core';
-    const DOCS_KEY = NS+'docs';
-    const SIGNAL_KEY = NS+'signal';
+  <script type="module">
+    import { Anim } from './78khub-anim.js';
+    (function(){
+      'use strict';
+      const NS='hub78k::v3_1::';
+      const CORE_KEY=NS+'core', DOCS_KEY=NS+'docs', VAULT_KEY=NS+'vault', SIGNAL_KEY=NS+'signal';
+      const $=(q,r=document)=>r.querySelector(q);
+      const toast=(m)=>{ const t=$("#toast"); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); };
+      const b64 = { toU8(b){ return Uint8Array.from(atob(b), c=>c.charCodeAt(0)); }, fromU8(u){ return btoa(String.fromCharCode(...u)); } };
+      const sections=[...document.querySelectorAll('.section')];
+      sections.forEach(sec=>{ sec.querySelector('.head').addEventListener('click', ()=>{ sections.forEach(s=> s.classList.add('collapsed')); sec.classList.remove('collapsed'); sec.classList.add('expanded'); sections.filter(s=>s!==sec).forEach(s=>s.classList.remove('expanded')); }); });
 
-    // Infodose 2.* keys (dentro do core.i2)
-    const I2_KEYS = ['voices','username','arc','bg','78k'];
+      const Modal = {
+        el: $("#modal"), title: $("#modal-title"), content: $("#modal-content"),
+        open(title, text){
+          this.title.textContent = title || 'Documento';
+          this.content.textContent = text || '';
+          this.el.classList.add('open');
+          Anim.slideYIn(this.el.querySelector('.box'));
+        },
+        close(){ this.el.classList.remove('open'); }
+      };
+      $("#modal-close").onclick = ()=>Modal.close();
+      $("#modal-copy").onclick = ()=>{
+        const txt = $("#modal-content").textContent || '';
+        navigator.clipboard.writeText(txt).then(()=>toast('Copiado'));
+      };
+      // close by backdrop click
+      $("#modal").addEventListener('click', (e)=>{ if(e.target.id==='modal') Modal.close(); });
 
-    const $=(q,r=document)=>r.querySelector(q);
-    const now = ()=> new Date().toISOString();
-    const toast=(m)=>{ const t=$("#toast"); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); };
+      const App={
+        core:null, docs:[], vault:{},
+        save(k,v){ localStorage.setItem(k, JSON.stringify(v)); },
+        load(k,fallback){ const raw=localStorage.getItem(k); if(!raw) return fallback; try{return JSON.parse(raw);}catch(_){return fallback;} },
+        badge(state){ const el=$("#state-badge"); el.textContent=state; el.style.color= state==='ativo'?'var(--accent)':(state==='bloqueado'?'#ffd166':'var(--muted)'); },
+        refresh(){
+          $("#ns-ver").textContent = NS.replace(/:+$/,'').split('::').slice(0,3).join('::');
+          this.core=this.load(CORE_KEY,null);
+          this.docs=this.load(DOCS_KEY,[]);
+          this.vault=this.load(VAULT_KEY,{});
+          if(!this.core){
+            this.badge('—'); $("#quick").innerHTML='<span class="muted small">Nenhum perfil inicializado.</span>';
+          }else{
+            const s=this.core;
+            this.badge(s.active?'ativo':'bloqueado');
+            $("#user-name").value=s.user?.name||''; $("#book-proof").value=s.book?.proof||'';
+            $("#quick").innerHTML=`
+              <div class="small"><strong>user_id:</strong> <span class="badge">${s.user?.id||'—'}</span></div>
+              <div class="small"><strong>grants:</strong> <span class="badge">${(s.grants||[]).join(', ')||'—'}</span></div>
+              <div class="small"><strong>has_book:</strong> <span class="badge">${s.book?.has||false}</span></div>
+              <div class="small"><strong>active:</strong> <span class="badge">${s.active||false}</span></div>
+              <div class="small"><strong>keys:</strong> <span class="mono">${s.keys?.pub||'—'}</span>
+            `;
+            const i2=s.i2||{};
+            $("#i2-username").value=i2.username||''; $("#i2-arc").value=i2.arc||'';
+            $("#i2-voices").value=i2.voices?JSON.stringify(i2.voices):'';
+            $("#i2-bg").value=i2.bg||''; $("#i2-78k").value=i2['78k']||'';
+          }
+          this.renderDocs();
+        },
+        async importSymKey(){
+          const symB64=this.core?.keys?.sym; if(!symB64) return null;
+          const raw=b64.toU8(symB64);
+          return await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt','decrypt']);
+        },
+        async encryptText(txt){
+          const key=await this.importSymKey(); if(!key) throw new Error('Chave simétrica ausente. Gere em Dashboard.');
+          const enc=new TextEncoder().encode(txt);
+          const iv=crypto.getRandomValues(new Uint8Array(12));
+          const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc));
+          return { iv: b64.fromU8(iv), data: b64.fromU8(ct) };
+        },
+        async decryptText(pkg){
+          const key=await this.importSymKey(); if(!key) throw new Error('Chave simétrica ausente.');
+          const iv=b64.toU8(pkg.iv), ct=b64.toU8(pkg.data);
+          const pt=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct));
+          return new TextDecoder().decode(pt);
+        },
+        renderDocs(){
+          const D=$("#docs");
+          if(!this.docs.length){ D.innerHTML='<span class="muted small">Sem documentos.</span>'; return; }
+          D.innerHTML = this.docs.map((d,i)=>{
+            const has = !!this.vault[d.id];
+            return `<div class="pill" style="gap:8px;margin:4px 0">
+              <span>#${i+1}</span><strong>${d.title}</strong><span class="badge mono">${d.id}</span>
+              <button class="btn small" data-act="view" data-id="${d.id}" data-title="${d.title}">Ver</button>
+              <button class="btn small" data-act="${has?'reproteger':'proteger'}" data-id="${d.id}">${has?'Reproteger':'Proteger'}</button>
+              <button class="btn small" data-act="del" data-id="${d.id}">Excluir</button>
+            </div>`;
+          }).join('');
+          D.querySelectorAll('button[data-act]').forEach(b=>{
+            b.addEventListener('click', async ()=>{
+              const act=b.getAttribute('data-act'); const id=b.getAttribute('data-id'); const title=b.getAttribute('data-title')||'Documento';
+              if(act==='del'){
+                this.vault[id] && delete this.vault[id];
+                this.docs = this.docs.filter(x=>x.id!==id);
+                this.save(DOCS_KEY, this.docs); this.save(VAULT_KEY, this.vault); this.renderDocs(); toast('Doc removido');
+              } else if(act==='proteger' || act==='reproteger'){
+                try{
+                  const content = prompt('Conteúdo do doc (texto):'); if(!content) return;
+                  Anim.loader.show();
+                  const pkg = await this.encryptText(content);
+                  this.vault[id]=pkg; this.save(VAULT_KEY, this.vault); toast('Protegido no Vault');
+                }catch(err){ toast(err.message); } finally { Anim.loader.hide(); this.renderDocs(); }
+              } else if(act==='view'){
+                const pkg=this.vault[id];
+                if(!pkg){ toast('Sem conteúdo protegido'); return; }
+                try{
+                  Anim.loader.show();
+                  const txt=await this.decryptText(pkg);
+                  Anim.loader.hide();
+                  Modal.open(title, txt);
+                }catch(err){ Anim.loader.hide(); toast('Falha ao decifrar (gere a chave)'); }
+              }
+            });
+          });
+        },
+        initCore(){
+          const name=$("#user-name").value.trim(); const proof=$("#book-proof").value.trim();
+          const user_id = crypto.getRandomValues(new Uint32Array(4)).join('-');
+          const has_book = proof.length>=12;
+          const core={ version:3.1, created_at:new Date().toISOString(), active:has_book,
+            user:{ id:user_id, name }, book:{ has:has_book, proof },
+            grants:[], i2:{ username:'', arc:'', voices:null, bg:'', '78k':'' }, keys:{ pub:null, sym:null } };
+          this.save(CORE_KEY, core); this.refresh(); toast('Hub inicializado');
+        },
+        async generateKeys(){
+          const rawKey = crypto.getRandomValues(new Uint8Array(32));
+          const pubId = btoa(String.fromCharCode(...rawKey.slice(0,8))).replace(/[^A-Za-z0-9]/g,'');
+          const sym = b64.fromU8(rawKey);
+          const c=this.load(CORE_KEY,{}); c.keys={ pub:'PUB-'+pubId, sym };
+          this.save(CORE_KEY,c); this.refresh(); toast('Chaves geradas');
+        },
+        exportState(){
+          const data={ core:this.load(CORE_KEY,null), docs:this.load(DOCS_KEY,[]), vault:this.load(VAULT_KEY,{}), ns:NS, exported_at:new Date().toISOString() };
+          const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+          const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='78khub_state.json'; a.click();
+        },
+        importState(){
+          const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json';
+          inp.onchange=()=>{ const f=inp.files[0]; if(!f) return;
+            const rd=new FileReader(); rd.onload=()=>{
+              try{ const data=JSON.parse(rd.result);
+                if(data.core) this.save(CORE_KEY, data.core);
+                if(data.docs) this.save(DOCS_KEY, data.docs);
+                if(data.vault) this.save(VAULT_KEY, data.vault);
+                this.refresh(); toast('Estado importado');
+              }catch(e){ toast('Falha ao importar'); }
+            }; rd.readAsText(f);
+          }; inp.click();
+        },
+        addDoc(){
+          const id=crypto.getRandomValues(new Uint32Array(2)).join('-');
+          const title=prompt('Título do doc:'); if(!title) return;
+          const docs=this.load(DOCS_KEY,[]); docs.push({id,title,created_at:new Date().toISOString()});
+          this.save(DOCS_KEY,docs); this.refresh();
+        },
+        clearDocs(){ this.save(DOCS_KEY,[]); this.save(VAULT_KEY,{}); this.refresh(); },
+        lock(){ const c=this.load(CORE_KEY,null); if(!c) return; c.active=false; this.save(CORE_KEY,c); this.refresh(); },
+        unlock(){ const c=this.load(CORE_KEY,null); if(!c) return; if(c.book?.has){ c.active=true; this.save(CORE_KEY,c); this.refresh(); } else { toast('Falta prova do livro'); } },
+        wipe(){ [CORE_KEY,DOCS_KEY,VAULT_KEY,SIGNAL_KEY].forEach(k=>localStorage.removeItem(k)); this.refresh(); },
+        saveI2(){
+          const c=this.load(CORE_KEY,null); if(!c) return toast('Inicialize o Hub');
+          const voicesRaw=$("#i2-voices").value.trim(); let voices=null; if(voicesRaw){ try{ voices=JSON.parse(voicesRaw); }catch(_){ voices=[voicesRaw]; } }
+          c.i2={ username:$("#i2-username").value.trim(), arc:$("#i2-arc").value, voices, bg:$("#i2-bg").value.trim(), '78k':$("#i2-78k").value.trim() };
+          this.save(CORE_KEY,c); this.refresh(); toast('Infodose 2.* salvo');
+        },
+        clearI2(){ const c=this.load(CORE_KEY,null); if(!c) return; c.i2={ username:'', arc:'', voices:null, bg:'', '78k':'' }; this.save(CORE_KEY,c); this.refresh(); toast('Infodose 2.* limpo'); }
+      };
 
-    // Accordion (apenas uma aberta)
-    const sections=[...document.querySelectorAll('.section')];
-    sections.forEach(sec=>{
-      const head=sec.querySelector('.head');
-      head.addEventListener('click', ()=>{
-        sections.forEach(s=> s.classList.add('collapsed'));
-        sec.classList.remove('collapsed');
-        sec.classList.add('expanded');
-        sections.filter(s=>s!==sec).forEach(s=>s.classList.remove('expanded'));
-      });
-    });
+      // Binds
+      $("#btn-init").onclick = ()=>App.initCore();
+      $("#btn-generate-keys").onclick = ()=>App.generateKeys();
+      $("#btn-export").onclick = ()=>App.exportState();
+      $("#btn-import").onclick = ()=>App.importState();
+      $("#btn-add-doc").onclick = ()=>App.addDoc();
+      $("#btn-clear-docs").onclick = ()=>App.clearDocs();
+      $("#btn-lock").onclick = ()=>App.lock();
+      $("#btn-unlock").onclick = ()=>App.unlock();
+      $("#btn-wipe").onclick = ()=>App.wipe();
+      $("#btn-save-i2").onclick = ()=>App.saveI2();
+      $("#btn-clear-i2").onclick = ()=>App.clearI2();
 
-    const App={
-      core:null, docs:[],
-      save(k,v){ localStorage.setItem(k, JSON.stringify(v)); },
-      load(k,fallback){ const raw=localStorage.getItem(k); if(!raw) return fallback; try{return JSON.parse(raw);}catch(_){return fallback;} },
-      badge(state){
-        const el=$("#state-badge");
-        el.textContent = state;
-        el.style.color = state==='ativo' ? 'var(--accent)' : state==='bloqueado' ? '#ffd166' : 'var(--muted)';
-      },
-      refresh(){
-        $("#ns-ver").textContent = NS.replace(/:+$/,'').split('::').slice(0,3).join('::');
-        this.core = this.load(CORE_KEY, null);
-        this.docs = this.load(DOCS_KEY, []);
-        if(!this.core){
-          this.badge('—');
-          $("#quick").innerHTML = '<span class="muted small">Nenhum perfil inicializado.</span>';
-        } else {
-          const s=this.core;
-          this.badge(s.active ? 'ativo' : 'bloqueado');
-          $("#user-name").value = s.user?.name||'';
-          $("#book-proof").value = s.book?.proof||'';
-          $("#quick").innerHTML = `
-            <div class="small"><strong>user_id:</strong> <span class="badge">${s.user?.id||'—'}</span></div>
-            <div class="small"><strong>grants:</strong> <span class="badge">${(s.grants||[]).join(', ')||'—'}</span></div>
-            <div class="small"><strong>has_book:</strong> <span class="badge">${s.book?.has||false}</span></div>
-            <div class="small"><strong>active:</strong> <span class="badge">${s.active||false}</span></div>
-            <div class="small"><strong>created_at:</strong> <span class="badge">${s.created_at||'—'}</span></div>
-          `;
-          // preencher I2
-          const i2 = s.i2||{};
-          $("#i2-username").value = i2.username||'';
-          $("#i2-arc").value = i2.arc||'';
-          $("#i2-voices").value = i2.voices ? JSON.stringify(i2.voices) : '';
-          $("#i2-bg").value = i2.bg||'';
-          $("#i2-78k").value = i2['78k']||'';
-        }
-        // docs
-        const D=$("#docs");
-        if(!this.docs.length){ D.innerHTML='<span class="muted small">Sem documentos.</span>'; }
-        else {
-          D.innerHTML = this.docs.map((d,i)=>`<div class="pill"><span>#${i+1}</span><strong>${d.title}</strong><span class="badge">${d.id}</span></div>`).join(' ');
-        }
-      },
-      initCore(){
-        const name=$("#user-name").value.trim();
-        const proof=$("#book-proof").value.trim();
-        const user_id = crypto.getRandomValues(new Uint32Array(4)).join('-');
-        const has_book = proof.length>=12;
-        const core={
-          version:2, created_at:now(), active:has_book,
-          user:{ id:user_id, name },
-          book:{ has:has_book, proof },
-          grants:[],
-          i2:{ username:'', arc:'', voices:null, bg:'', '78k':'' },
-          keys:{ pub:null, sym:null }
-        };
-        this.save(CORE_KEY, core);
-        this.refresh(); toast('Hub inicializado');
-      },
-      async generateKeys(){
-        const rawKey = crypto.getRandomValues(new Uint8Array(32));
-        const pubId = btoa(String.fromCharCode(...rawKey.slice(0,8))).replace(/[^A-Za-z0-9]/g,'');
-        const sym = btoa(String.fromCharCode(...rawKey));
-        const c=this.load(CORE_KEY,{});
-        c.keys={ pub:'PUB-'+pubId, sym };
-        this.save(CORE_KEY,c); this.refresh(); toast('Chaves geradas');
-      },
-      exportState(){
-        const data={ core:this.load(CORE_KEY,null), docs:this.load(DOCS_KEY,[]), ns:NS, exported_at:now() };
-        const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='78khub_state.json'; a.click();
-      },
-      importState(){
-        const inp=document.createElement('input'); inp.type='file'; inp.accept='application/json';
-        inp.onchange=()=>{ const f=inp.files[0]; if(!f) return;
-          const rd=new FileReader(); rd.onload=()=>{
-            try{ const data=JSON.parse(rd.result);
-              if(data.core) localStorage.setItem(CORE_KEY, JSON.stringify(data.core));
-              if(data.docs) localStorage.setItem(DOCS_KEY, JSON.stringify(data.docs));
-              App.refresh(); toast('Estado importado');
-            }catch(e){ toast('Falha ao importar'); }
-          }; rd.readAsText(f);
-        };
-        inp.click();
-      },
-      addDoc(){
-        const id=crypto.getRandomValues(new Uint32Array(2)).join('-');
-        const title=prompt('Título do doc:'); if(!title) return;
-        const docs=this.load(DOCS_KEY,[]); docs.push({id,title,created_at:now()});
-        this.save(DOCS_KEY,docs); this.refresh();
-      },
-      clearDocs(){ this.save(DOCS_KEY,[]); this.refresh(); },
-      lock(){ const c=this.load(CORE_KEY,null); if(!c) return; c.active=false; this.save(CORE_KEY,c); this.refresh(); },
-      unlock(){ const c=this.load(CORE_KEY,null); if(!c) return; if(c.book?.has){ c.active=true; this.save(CORE_KEY,c); this.refresh(); } else { toast('Falta prova do livro'); } },
-      wipe(){ [CORE_KEY,DOCS_KEY,SIGNAL_KEY].forEach(k=>localStorage.removeItem(k)); this.refresh(); },
-      saveI2(){
-        const c=this.load(CORE_KEY,null); if(!c) return toast('Inicialize o Hub');
-        const voicesRaw=$("#i2-voices").value.trim();
-        let voices=null; if(voicesRaw){ try{ voices=JSON.parse(voicesRaw); }catch(_){ voices=[voicesRaw]; } }
-        c.i2={
-          username:$("#i2-username").value.trim(),
-          arc:$("#i2-arc").value,
-          voices:voices,
-          bg:$("#i2-bg").value.trim(),
-          '78k':$("#i2-78k").value.trim()
-        };
-        this.save(CORE_KEY,c); this.refresh(); toast('Infodose 2.* salvo');
-      },
-      clearI2(){
-        const c=this.load(CORE_KEY,null); if(!c) return;
-        c.i2={ username:'', arc:'', voices:null, bg:'', '78k':'' };
-        this.save(CORE_KEY,c); this.refresh(); toast('Infodose 2.* limpo');
-      }
-    };
+      if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
-    // UI binds
-    $("#btn-init").onclick = ()=>App.initCore();
-    $("#btn-generate-keys").onclick = ()=>App.generateKeys();
-    $("#btn-export").onclick = ()=>App.exportState();
-    $("#btn-import").onclick = ()=>App.importState();
-    $("#btn-add-doc").onclick = ()=>App.addDoc();
-    $("#btn-clear-docs").onclick = ()=>App.clearDocs();
-    $("#btn-lock").onclick = ()=>App.lock();
-    $("#btn-unlock").onclick = ()=>App.unlock();
-    $("#btn-wipe").onclick = ()=>App.wipe();
-    $("#btn-save-i2").onclick = ()=>App.saveI2();
-    $("#btn-clear-i2").onclick = ()=>App.clearI2();
-
-    // PWA
-    if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
-
-    // SDK text
-    const SDK = `
-// 78KHub SDK (v2 - Infodose 2.*)
-const HUB_NS = 'hub78k::v2::';
+      // SDK block
+      const SDK = `
+// 78KHub SDK (v3.1) — inclui i2 e sinais
+const HUB_NS = 'hub78k::v3_1::';
 const CORE = HUB_NS + 'core';
 const SIGNAL = HUB_NS + 'signal';
 export const Hub78K = {
   core(){ try{ return JSON.parse(localStorage.getItem(CORE)||'null'); }catch(_){ return null; } },
   active(){ const c=this.core(); return !!(c && c.active); },
   user(){ return this.core()?.user||null; },
-  i2(){ return this.core()?.i2||null; }, // { voices, username, arc, bg, 78k }
+  i2(){ return this.core()?.i2||null; },
   grants(){ return this.core()?.grants||[]; },
-  askGrant(appId){
-    const c=this.core(); if(!c) return false;
-    if(!c.grants.includes(appId)){
-      c.grants.push(appId); localStorage.setItem(CORE, JSON.stringify(c));
-      this.signal({ type:'grant:add', appId }); return true;
-    } return false;
-  },
-  signal(payload){
-    localStorage.setItem(SIGNAL, JSON.stringify({ t: Date.now(), payload }));
-    setTimeout(()=>localStorage.removeItem(SIGNAL), 50);
-  },
-  onSignal(fn){
-    window.addEventListener('storage', (e)=>{
-      if(e.key===SIGNAL && e.newValue){ try{ fn(JSON.parse(e.newValue).payload); }catch(_){ } }
-    });
-  }
+  askGrant(appId){ const c=this.core(); if(!c) return false; if(!c.grants.includes(appId)){ c.grants.push(appId); localStorage.setItem(CORE, JSON.stringify(c)); this.signal({ type:'grant:add', appId }); return true; } return false; },
+  signal(payload){ localStorage.setItem(SIGNAL, JSON.stringify({ t: Date.now(), payload })); setTimeout(()=>localStorage.removeItem(SIGNAL), 50); },
+  onSignal(fn){ window.addEventListener('storage', (e)=>{ if(e.key===SIGNAL && e.newValue){ try{ fn(JSON.parse(e.newValue).payload); }catch(_){ } } }); }
 };`.trim();
-    $("#sdk").textContent = SDK;
-    $("#btn-copy-sdk").onclick = ()=>{ navigator.clipboard.writeText(SDK).then(()=>toast('SDK copiado')); };
+      $("#sdk").textContent=SDK;
+      $("#btn-copy-sdk").onclick=()=>{ navigator.clipboard.writeText(SDK).then(()=>toast('SDK copiado')); };
 
-    // initial render
-    App.refresh();
-  })();
+      App.refresh();
+    })();
   </script>
 </body>
 </html>
